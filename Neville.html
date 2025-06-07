@@ -5,29 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Método de Neville</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/algebra.js/0.2.6/algebra.min.js"></script>
 </head>
-<body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 min-h-screen flex flex-col items-center justify-center p-4 text-white">
+<body class="bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500 min-h-screen flex items-center justify-center p-4 text-white">
 
   <div class="bg-white text-gray-800 p-8 rounded-xl shadow-xl w-full max-w-lg">
     <h1 class="text-3xl font-bold mb-6 text-center">Método de Neville</h1>
 
     <label for="numPuntos" class="block font-semibold mb-2">¿Cuántos puntos quieres ingresar?</label>
-    <input type="number" id="numPuntos" min="2" max="10" placeholder="Ejemplo: 3" class="w-full p-2 rounded-md border border-gray-300 mb-4">
+    <input type="number" id="numPuntos" min="2" max="10" placeholder="Ejemplo: 3"
+           class="w-full p-2 rounded-md border border-gray-300 mb-4">
 
     <button onclick="crearCamposNeville()" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">Crear Campos</button>
 
     <div id="puntosContainer" class="my-4 space-y-2"></div>
 
     <label for="xCalcular" class="block font-semibold mt-4">Ingresa el valor de x para calcular P(x):</label>
-    <input type="number" id="xCalcular" placeholder="Ejemplo: 1.5" class="w-full p-2 rounded-md border border-gray-300 mb-4">
+    <input type="number" id="xCalcular" placeholder="Ejemplo: 1.5"
+           class="w-full p-2 rounded-md border border-gray-300 mb-4">
 
     <button onclick="calcularNeville()" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700">Calcular P(x)</button>
-
-    <a href="index.html" class="block mt-6 bg-gray-600 text-white text-center py-2 rounded-md hover:bg-gray-700 transition">
+   <a href="index.html" class="block mt-6 bg-gray-600 text-white text-center py-2 rounded-md hover:bg-gray-700 transition">
       Volver al Menú
     </a>
 
-    <p id="resultado" class="text-xl font-semibold mt-4 text-center"></p>
+    <div id="resultado" class="text-center text-xl font-semibold mt-4"></div>
+    
+    <p class="text-center mt-4 font-semibold">Función generada:</p>
+    <div id="funcionGenerada"
+         class="bg-gray-100 text-black text-center px-4 py-2 rounded font-mono text-lg mt-2">
+    </div>
   </div>
 
   <script src="scriptneville.js"></script>
