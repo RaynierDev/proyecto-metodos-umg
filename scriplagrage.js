@@ -27,6 +27,7 @@ function calcularLagrange() {
     const y = parseFloat(document.getElementById(`y${i}`).value);
     if (isNaN(x) || isNaN(y)) {
       document.getElementById('resultado').textContent = 'Por favor, completa todos los campos correctamente.';
+      document.getElementById('polinomio').innerHTML = '';
       return;
     }
     xs.push(x);
@@ -34,15 +35,26 @@ function calcularLagrange() {
   }
 
   let resultado = 0;
+  let polinomioSimbolico = '';
+
   for (let i = 0; i < num; i++) {
     let Li = 1;
+    let terminoSimbolico = '';
+
     for (let j = 0; j < num; j++) {
       if (i !== j) {
         Li *= (xVal - xs[j]) / (xs[i] - xs[j]);
+        const numerador = `(x - ${xs[j]})`;
+        const denominador = `(${xs[i]} - ${xs[j]})`;
+        terminoSimbolico += ` * ${numerador}/${denominador}`;
       }
     }
+
     resultado += ys[i] * Li;
+    polinomioSimbolico += `${i > 0 ? ' + ' : ''}${ys[i]}${terminoSimbolico}`;
   }
 
   document.getElementById('resultado').textContent = `P(${xVal}) = ${resultado.toFixed(4)}`;
+  document.getElementById('polinomio').innerHTML = `<strong>Polinomio:</strong> <br>P(x) = ${polinomioSimbolico}`;
 }
+
