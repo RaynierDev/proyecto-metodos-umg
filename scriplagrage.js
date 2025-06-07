@@ -27,34 +27,32 @@ function calcularLagrange() {
     const y = parseFloat(document.getElementById(`y${i}`).value);
     if (isNaN(x) || isNaN(y)) {
       document.getElementById('resultado').textContent = 'Por favor, completa todos los campos correctamente.';
-      document.getElementById('polinomio').innerHTML = '';
       return;
     }
     xs.push(x);
     ys.push(y);
   }
 
-  let resultado = 0;
-  let polinomioSimbolico = '';
+  let expr = new algebra.Expression(0);
 
   for (let i = 0; i < num; i++) {
-    let Li = 1;
-    let terminoSimbolico = '';
-
+    let term = new algebra.Expression(ys[i]);
     for (let j = 0; j < num; j++) {
       if (i !== j) {
-        Li *= (xVal - xs[j]) / (xs[i] - xs[j]);
-        const numerador = `(x - ${xs[j]})`;
-        const denominador = `(${xs[i]} - ${xs[j]})`;
-        terminoSimbolico += ` * ${numerador}/${denominador}`;
+        let numerator = new algebra.Expression('x').subtract(xs[j]);
+        let denominator = xs[i] - xs[j];
+        term = term.multiply(numerator.divide(denominator));
       }
     }
-
-    resultado += ys[i] * Li;
-    polinomioSimbolico += `${i > 0 ? ' + ' : ''}${ys[i]}${terminoSimbolico}`;
+    expr = expr.add(term);
   }
 
-  document.getElementById('resultado').textContent = `P(${xVal}) = ${resultado.toFixed(4)}`;
-  document.getElementById('polinomio').innerHTML = `<strong>Polinomio:</strong> <br>P(x) = ${polinomioSimbolico}`;
-}
+  let simplified = expr.simplify();
+  let evaluated = expr.eval({ x: xVal });
 
+  document.getElementById('resultado').innerHTML = `
+    <span class="block font-bold text-gray-700 mt-4">P(${xVal}) = ${evaluated}</span>
+    <span class="block text-sm text-gray-700 mt-2">Función generada:</span>
+    <span class="block text-sm text-gray-800 mt-1 p-2 bg-gray-100 rounded-md">${simplified.toString()}</span>
+  `;
+}

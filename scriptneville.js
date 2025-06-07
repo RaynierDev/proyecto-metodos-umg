@@ -27,13 +27,14 @@ function calcularNeville() {
     const y = parseFloat(document.getElementById(`y${i}`).value);
     if (isNaN(x) || isNaN(y)) {
       document.getElementById('resultado').textContent = 'Por favor, completa todos los campos correctamente.';
+      document.getElementById('funcionGenerada').textContent = '';
       return;
     }
     xs.push(x);
     ys.push(y);
   }
 
-  // Implementación de Neville
+  // Método de Neville
   let P = Array(num).fill(0).map(() => Array(num).fill(0));
   for (let i = 0; i < num; i++) {
     P[i][0] = ys[i];
@@ -45,5 +46,31 @@ function calcularNeville() {
     }
   }
 
-  document.getElementById('resultado').textContent = `P(${xVal}) = ${P[0][num - 1].toFixed(4)}`;
+  const resultado = P[0][num - 1];
+  document.getElementById('resultado').innerHTML = `P(${xVal}) = ${resultado.toFixed(6)}`;
+
+  // Mostrar función generada estilo Lagrange (simplificada)
+  document.getElementById('funcionGenerada').textContent = generarFuncionLagrangeSimplificada(xs, ys);
+}
+
+function generarFuncionLagrangeSimplificada(xs, ys) {
+  const algebra = window.algebra;
+  let total = new algebra.Expression();
+
+  for (let i = 0; i < xs.length; i++) {
+    let Li = new algebra.Expression(1);
+    let den = 1;
+
+    for (let j = 0; j < xs.length; j++) {
+      if (i !== j) {
+        Li = Li.multiply(new algebra.Expression('x').subtract(xs[j]));
+        den *= (xs[i] - xs[j]);
+      }
+    }
+
+    const termino = Li.divide(den).multiply(ys[i]);
+    total = total.add(termino);
+  }
+
+  return total.simplify().toString();
 }
